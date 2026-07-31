@@ -1,0 +1,597 @@
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+ 
+* {
+  box-sizing: border-box;
+}
+
+.layout-wrapper {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  font-family: Inter, sans-serif;
+}
+
+.layout-menu {
+  width: 260px;
+  background-color: #fff;
+  border-right: 1px solid #ececf5;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.app-brand {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.dashboard-logo {
+  height: 36px;
+}
+
+.menu-inner {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-item {
+  margin: 6px 12px;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #5b5f7b;
+  font-weight: 500;
+}
+
+.menu-link:hover {
+  background-color: #f5f6ff;
+  color: #696cff;
+}
+
+.menu-parent {
+  cursor: pointer;
+}
+
+.menu-parent.active {
+  background-color: #eef0ff;
+  color: #696cff;
+}
+
+.menu-icon {
+  font-family: "tabler-icons" !important;
+  font-size: 18px;
+  color: #697a8d;
+}
+
+.layout-page {
+  flex: 1;
+  background-color: #f4f6fb;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-header {
+    background: #ffffff;
+    border: 1px solid #ececf5;
+    padding: 10px 14px;
+    border-radius: 15px;
+    width: 98%;
+    margin-left: 13px;
+    margin-top: 5px;
+    text-align: center;
+}
+
+.top-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #2e2e4d;
+}
+
+.right-panel-container {
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+/* end of main panels*/
+
+
+
+/* table css starts */
+
+/* ---------- TABLE WRAPPER ---------- */
+.bar-table-wrapper {
+  margin-top: 5px;
+  width: 100%;
+}
+
+/* ---------- COMMON TABLE ---------- */
+.employee-table {
+  width: 100%;
+  table-layout: fixed;        /* KEY FIX */
+  border-collapse: collapse; /* KEY FIX */
+}
+
+/* ---------- HEADER ---------- */
+.header-table {
+  background: #f9fafb;
+  padding-right: 12px; /* scrollbar compensation */
+}
+
+.employee-table th {
+  padding: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  border-bottom: 1px solid #e5e7eb;
+  color: #374151;
+}
+
+/* ---------- BODY ---------- */
+.employee-table td {
+  padding: 14px;
+  font-size: 13px;
+  text-align: center;
+  border-top: 1px solid #e5e7eb;
+  color: #111827;
+}
+
+.body-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+/* ---------- SCROLL ---------- */
+
+
+/* ---------- ACTION COLUMN ---------- */
+.action-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* ---------- NO RECORDS ---------- */
+.no-records {
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+
+.header-table {
+  background: #f9fafb;
+}
+
+.tbody-scroll-barcode {
+  height: 80% !important;
+  overflow-y: auto;
+  width: 100%;
+  scrollbar-gutter: stable; 
+}
+
+.body-table tbody tr {
+  width: 100%;
+}
+.employee-page {
+  padding: 14px;
+}
+
+.employee-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+   padding-top: 1px !important;
+}
+
+.employee-header h4 {
+  margin-bottom: 16px;
+  font-size: 18px;
+}
+
+
+.employee-toolbar {
+  margin-top: 24px;
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.noofstickers{
+  border: 1px solid #ececf5;
+    border-radius: 5px;
+    height: 30px;
+    width: 115px;
+    text-align: center;
+}
+.head-align{
+      padding-right: 35px;
+}
+.barcode-img{
+  width: 50%;
+    height: 40px;
+}
+/* table css ends */
+
+/* ifram css starts */
+
+.pdf-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.pdf-modal {
+  width: 90%;
+  height: 95%;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.pdf-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  border: none;
+  background: red;
+  color: white;
+  font-size: 18px;
+  padding: 4px 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+}
+
+
+/* ifram css ends */
+
+.arrow-controls {
+  display: flex;
+  margin-left: 10px;
+    margin-top: 7px;
+}
+.arrow-div{
+  line-height: 1px;
+    margin-top: 1px;
+}
+
+.arrow-btn {
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.arrow-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.arrow-th{
+    padding-top: 10px !important;
+    padding-right: 0px !important;
+    padding-left: 10px !important;
+    padding-bottom: 10px !important;
+}
+.arrow-p{
+    font-size: 10px;
+    margin-top: 18px;
+}
+.arrspan{
+  font-weight: lighter;
+}
+.Next-hide{
+  display: none;
+}
+.Prev-hide{
+  display: none;
+}
+
+.profile-container {
+  position: relative;
+}
+
+.profile-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #4c6ef5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.profile-dropdown {
+  position: absolute;
+  right: 0;
+  top: 50px;
+  width: 140px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0px 3px 10px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+
+.profile-item {
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.profile-item:hover {
+  background: #f2f2f2;
+}
+
+.logout {
+  color: red;
+}
+.headertop{
+  width: 100%;
+}
+.bar-arrow-div {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.arrow-p {
+  margin: 0;
+  font-size: 14px;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.arrow-btn {
+  cursor: pointer;
+  padding: 5px 10px;
+  font-size: 16px;
+}
+
+.Prev-hide,
+.Next-hide {
+  visibility: hidden; 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* media query starts */
+
+/* ===============================
+   EXTRA SMALL DEVICES (<576px)
+   =============================== */
+@media (max-width: 575px) {
+
+  .layout-wrapper{
+    flex-direction: column;
+  }
+
+  .layout-menu{
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .menu-inner{
+    display: flex;
+  }
+
+  .menu-item{
+    margin: 6px;
+  }
+
+  .layout-page{
+    padding: 10px;
+  }
+
+  .top-header{
+    width: 100%;
+    margin-left: 0;
+    border-radius: 10px;
+  }
+
+  .employee-toolbar{
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .employee-card{
+    padding: 12px;
+    padding-top: 1px !important;
+  }
+
+  .employee-table th,
+  .employee-table td{
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .barcode-img{
+    width: 80%;
+  }
+
+  .pdf-modal{
+    width: 95%;
+    height: 90%;
+  }
+}
+
+
+/* ===============================
+   SMALL DEVICES (≥576px)
+   =============================== */
+@media (min-width: 576px) {
+
+  .layout-menu{
+    width: 200px;
+  }
+
+  .top-header{
+    width: 96%;
+  }
+
+  .employee-card{
+    padding: 16px;
+     padding-top: 1px !important;
+  }
+
+  .employee-table th,
+  .employee-table td{
+    padding: 10px;
+  }
+}
+
+
+/* ===============================
+   MEDIUM DEVICES (≥768px)
+   =============================== */
+@media (min-width: 768px) {
+
+  .layout-menu{
+    width: 230px;
+  }
+
+  .top-header{
+    width: 97%;
+  }
+
+  .employee-toolbar{
+    flex-direction: row;
+  }
+
+  .employee-table th,
+  .employee-table td{
+    font-size: 13px;
+  }
+
+  .barcode-img{
+    width: 60%;
+  }
+}
+
+
+/* ===============================
+   LARGE DEVICES (≥992px)
+   =============================== */
+@media (min-width: 992px) {
+
+  .layout-menu{
+    width: 260px;
+  }
+
+  .top-header{
+    width: 98%;
+  }
+
+  .employee-card{
+    padding: 20px;
+     padding-top: 1px !important;
+  }
+
+  .barcode-img{
+    width: 50%;
+  }
+}
+
+
+/* ===============================
+   EXTRA LARGE DEVICES (≥1200px)
+   =============================== */
+@media (min-width: 1200px) {
+
+  .layout-menu{
+    width: 280px;
+  }
+
+  .employee-card{
+    padding: 24px;
+     padding-top: 1px !important;
+  }
+
+  .top-header h3{
+    font-size: 22px;
+  }
+
+  .employee-table th,
+  .employee-table td{
+    padding: 14px;
+    font-size: 14px;
+  }
+}
+/* media query end */

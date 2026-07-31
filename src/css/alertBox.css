@@ -1,0 +1,148 @@
+.alert-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.alert-box {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 360px;
+  max-width: 520px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+  padding: 18px 22px;
+  animation: slideDown 0.35s ease-out;
+  z-index: 10000;
+  pointer-events: all;
+}
+
+.alert-message {
+  font-size: 14px;
+  font-weight: 500;
+  color: #2e2e4d;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.alert-overlay.auto .alert-box {
+  border-left: 5px solid #5f63ff;
+}
+
+.alert-overlay.confirm {
+  background: rgba(0, 0, 0, 0.25);
+  pointer-events: all;
+}
+
+.alert-overlay.confirm .alert-box {
+  top: 80px;
+  border-left: 5px solid #ff9f43;
+}
+
+.alert-overlay.ok {
+  background: rgba(0, 0, 0, 0.18);
+  pointer-events: all;
+}
+
+.alert-overlay.ok .alert-box {
+  top: 80px;
+}
+
+.alert-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.btn-ok {
+  background: linear-gradient(135deg, #5f63ff, #696cff);
+  color: #ffffff;
+  border: none;
+  padding: 8px 26px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 14px rgba(95, 99, 255, 0.35);
+}
+
+.btn-ok:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(95, 99, 255, 0.45);
+}
+
+.btn-ok:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(95, 99, 255, 0.3);
+}
+
+.btn-ok:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px #696cff;
+}
+
+.alert-overlay.ok .btn-ok {
+  background: linear-gradient(135deg, #696cff, #696cff);
+  box-shadow: 0 6px 14px rgba#696cff;
+}
+
+.alert-overlay.ok .btn-ok:hover {
+  box-shadow: 0 10px 22px #696cff;
+}
+
+.btn-cancel {
+  background: #eef0f6;
+  color: #4a4a68;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel:hover {
+  background: #e0e3ec;
+}
+
+.btn-cancel:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(150, 150, 170, 0.25);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -16px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.btn-yes {
+  background-color: #28a745;
+  color: white;
+  padding: 6px 16px;
+  margin-right: 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-no {
+  background-color: #dc3545;
+  color: white;
+  padding: 6px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
