@@ -78,6 +78,7 @@ html, body, #root {
   background-color: #f4f6fb;
   display: flex;
   flex-direction: column;
+      padding-left: 80px;
 }
 
 .top-header {
@@ -204,7 +205,6 @@ html, body, #root {
 }
 
 .form-group input {
-  padding: 6px 10px;
   font-size: 13px;
   border-radius: 6px;
   border: 1px solid #dfe3eb;
@@ -893,9 +893,7 @@ width: 0% !important;
     margin:6px;
   }
 
-  .layout-page{
-    padding:10px;
-  }
+
 
   .top-header{
     width:100%;

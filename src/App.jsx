@@ -7,6 +7,7 @@ import Barcode from "./pages/barcode.jsx"
 import Salary from "./pages/salary.jsx";
 import SalarySetting from "./pages/salarysetting.jsx"
 import IDCard from "./pages/idcard.jsx"
+import Advance from "./pages/advancepage.jsx"
 import CommonSubMenuScreen from "./pages/submenu/commonsubmenuscreen.jsx"
 import { Routes, Route } from "react-router-dom";
 import { AlertProvider } from "./common/alert/alertService.jsx"
@@ -27,6 +28,7 @@ function App() {
           <Route path="/Salary" element={<Salary />} />     
           <Route path="/SalarySetting" element={<SalarySetting />} />     
           <Route path="/IDCard" element={<IDCard/>} />   
+          <Route path="/Advance" element={<Advance/>} />   
           <Route path="/commonsubmenuscreen" element={<CommonSubMenuScreen/>} /> 
         </Routes>
       </AlertProvider>

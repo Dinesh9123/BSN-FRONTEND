@@ -1,53 +1,68 @@
 import HRMLogo from "../../assets/HRM-logo.svg";
-import { useState } from "react";
-import { showAlert,showConfirm} from "../../common/alert/alertService.jsx";
+import { useState, useEffect } from "react";
+import { showAlert, showConfirm } from "../../common/alert/alertService.jsx";
 import { useLoader } from "../../common/loader/loaderService.jsx";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Select from "react-select";
-import "../../css/commonsubmenuscreen.css"
+import "../../css/commonsubmenuscreen.css";
 import { IconAlertCircle } from "@tabler/icons-react";
 import Sidebar from "../../components/Sidebar.jsx";
-import Cards from "../submenu/card.jsx"
-import PopScreen from "../submenu/popscreen.jsx"
-import indiaData from "../../data/CountryStateDistrict.js"
-import {FetchDepartmentList,FetchEmployeeList,MOVEMENTREPORTASPDF,MOVEMENTREPORTASEXCEL,StaffSalaryaspdf,StaffSalaryasExcel,GETPICKERSALARYREPORT,
-        PICKERSALARYREPORTASEXCEL,GETPICKERSALARYFINALREPORT,DownloadPickerFinalSalaryReportExcel,FormMDetailedaspdf,FormMDetailedasEXCEL,
-        FormMWeeklyaspdf,FormMWeeklyasEXCEL,DAILYMOVEMENTREPORTASPDF,DAILYMOVEMENTREPORTASEXCEL,GROUPSUMMARYDETAILSASPDF,GROUPSUMMARYDETAILSASEXCEL,
-      FinalizeStaffSalaryReport,FinalizeWorker15DaysSalaryReport,
-      DownloadExcel} from "../../common/apiService.jsx";
+import Cards from "../submenu/card.jsx";
+import PopScreen from "../submenu/popscreen.jsx";
+import indiaData from "../../data/CountryStateDistrict.js";
+
+import {
+    FetchDepartmentList,
+    FetchEmployeeList,
+    MOVEMENTREPORTASPDF,
+    MOVEMENTREPORTASEXCEL,
+    StaffSalaryaspdf,
+    StaffSalaryasExcel,
+    GETPICKERSALARYREPORT,
+    PICKERSALARYREPORTASEXCEL,
+    GETPICKERSALARYFINALREPORT,
+    DownloadPickerFinalSalaryReportExcel,
+    FormMDetailedaspdf,
+    FormMDetailedasEXCEL,
+    FormMWeeklyaspdf,
+    FormMWeeklyasEXCEL,
+    DAILYMOVEMENTREPORTASPDF,
+    DAILYMOVEMENTREPORTASEXCEL,
+    GROUPSUMMARYDETAILSASPDF,
+    GROUPSUMMARYDETAILSASEXCEL,
+    FinalizeStaffSalaryReport,
+    FinalizeWorker15DaysSalaryReport,
+    DownloadExcel
+} from "../../common/apiService.jsx";
 
 
 export default function SubScreen() {
 
+    var { showLoader, hideLoader } = useLoader();
+    var navigate = useNavigate();
+    var location = useLocation();
 
-var { showLoader, hideLoader } = useLoader();
-var navigate = useNavigate();
-
-var [salaryOpen, setSalaryOpen] = useState(true);
-var [activeSubMenu, setActiveSubMenu] = useState("staff");
-var [activePage, setActivePage] = useState("salary");
-var [showPopup, setShowPopup] = useState(false);
-var [selectedReport, setSelectedReport] = useState("");
-var [workerDepartment,setWorkerDepartment] = useState([]);
-var [staffDepartment,setStaffDepartment] = useState([]);
-var [workerDesignation,setWorkerDesignation] = useState([]);
-var [staffDesignation,setStaffDesignation] = useState([]);
-var [deprtdesifnation,setDeprtdesifnation] = useState([]);
-var [employeeDetails,setEmployeeDetails] = useState([]);
-var [pdfUrl,setPdfUrl] = useState(false);
-var [firstStaffFinalizedMonthandYear,setFirstStaffFinalizedMonthandYear] = useState([]);
-var [lastStaffFinalizedMonthandYear,setLastStaffFinalizedMonthandYear] = useState([]);
-var [firstWorkerFinalizedMonthandYear,setFirstWorkerFinalizedMonthandYear] = useState([]);
-var [lastWorkerFinalizedMonthandYear,setLastWorkerFinalizedMonthandYear] = useState([]);
+    var [salaryOpen, setSalaryOpen] = useState(true);
+    var [activeSubMenu, setActiveSubMenu] = useState("");
+    var [activePage, setActivePage] = useState("salary");
+    var [showPopup, setShowPopup] = useState(false);
+    var [selectedReport, setSelectedReport] = useState("");
+    var [workerDepartment, setWorkerDepartment] = useState([]);
+    var [staffDepartment, setStaffDepartment] = useState([]);
+    var [workerDesignation, setWorkerDesignation] = useState([]);
+    var [staffDesignation, setStaffDesignation] = useState([]);
+    var [deprtdesifnation, setDeprtdesifnation] = useState([]);
+    var [employeeDetails, setEmployeeDetails] = useState([]);
+    var [pdfUrl, setPdfUrl] = useState(false);
+    var [firstStaffFinalizedMonthandYear, setFirstStaffFinalizedMonthandYear] = useState([]);
+    var [lastStaffFinalizedMonthandYear, setLastStaffFinalizedMonthandYear] = useState([]);
+    var [firstWorkerFinalizedMonthandYear, setFirstWorkerFinalizedMonthandYear] = useState([]);
+    var [lastWorkerFinalizedMonthandYear, setLastWorkerFinalizedMonthandYear] = useState([]);
 
 
-var TabClick = (tabName) =>{
-    showLoader("Please wait ...");
-    navigate("/"+tabName);
-    hideLoader();
-
-}
+var TabClick = (tabName) => {
+    navigate("/" + tabName);
+};
 var handleCardClick = (report) => {
     setSelectedReport(report.name);
     setShowPopup(true);
@@ -1308,248 +1323,350 @@ var GroupSummaryASEXCELD = (filters) =>{
       )
 }
 
+
 return (
-<div className="layout-wrapper"> 
+    <div className="salary-report-layout">
 
-    <Sidebar
-        activePage="salary"
-        activeSubMenu={activeSubMenu}
-        salaryOpen={salaryOpen}
-        setSalaryOpen={setSalaryOpen}
-        setActiveSubMenu={setActiveSubMenu}
-        TabClick={TabClick}
-    />
-
- <div className="layout-page">  
-      {activeSubMenu === "movement" && (
-    <>
-        <Cards
-            reports={movementReports}
-            onCardClick={handleCardClick}
+        <Sidebar
+            activePage="salary"
+            activeSubMenu={activeSubMenu}
+            salaryOpen={salaryOpen}
+            setSalaryOpen={setSalaryOpen}
+            setActiveSubMenu={setActiveSubMenu}
+            TabClick={TabClick}
         />
 
-        {showPopup && selectedReport === "Movement" && (
-            <PopScreen
-                title={selectedReport}
-                onClose={() => setShowPopup(false)}
-                config={movementConfig}                
-                categoryOptions = {categoryOptions}
-                stateOptions = {stateOptions}
-                genderOptions = {genderOptions}
-                departmentOptions={workerDesignation}
-                designationOptions={workerDesignation}
-                deprtdesifnation={deprtdesifnation}   
-                employeeDetails={employeeDetails}  
-                onPreview={GETMOVEMENTREPORTASPDFasView}
-                onPdf={GETMOVEMENTREPORTASPDF}
-                onExcel={GETMOVEMENTREPORTASEXCEL}  
-                 ReportType="MOVEMENT"
-            />
+        <main className="salary-report-content">
+
+            {/* ================= MOVEMENT REPORTS ================= */}
+
+            <section className="salary-report-section salary-report-section-movement">
+
+                <div className="salary-report-section-header">
+
+                    <div className="salary-report-section-heading">
+                        <h2 className="salary-report-section-title">
+                            Movement Reports
+                        </h2>
+
+                        <span className="salary-report-section-subtitle">
+                            Attendance and employee movement related reports
+                        </span>
+                    </div>
+
+                    <div className="salary-report-section-count">
+                        {movementReports.length} Reports
+                    </div>
+
+                </div>
+
+                <div className="salary-report-cards-area">
+                    <Cards
+                        reports={movementReports}
+                        onCardClick={handleCardClick}
+                    />
+                </div>
+
+            </section>
+
+
+            {/* ================= STAFF REPORTS ================= */}
+
+            <section className="salary-report-section salary-report-section-staff">
+
+                <div className="salary-report-section-header">
+
+                    <div className="salary-report-section-heading">
+                        <h2 className="salary-report-section-title">
+                            Staff Reports
+                        </h2>
+
+                        <span className="salary-report-section-subtitle">
+                            Staff salary and payroll related reports
+                        </span>
+                    </div>
+
+                    <div className="salary-report-section-count">
+                        {staffReports.length} Report
+                    </div>
+
+                </div>
+
+                <div className="salary-report-cards-area">
+                    <Cards
+                        reports={staffReports}
+                        onCardClick={handleCardClick}
+                    />
+                </div>
+
+            </section>
+
+
+            {/* ================= WORKER REPORTS ================= */}
+
+            <section className="salary-report-section salary-report-section-worker">
+
+                <div className="salary-report-section-header">
+
+                    <div className="salary-report-section-heading">
+                        <h2 className="salary-report-section-title">
+                            Worker Reports
+                        </h2>
+
+                        <span className="salary-report-section-subtitle">
+                            Worker salary, Form M and summary reports
+                        </span>
+                    </div>
+
+                    <div className="salary-report-section-count">
+                        {workerReports.length} Reports
+                    </div>
+
+                </div>
+
+                <div className="salary-report-cards-area">
+                    <Cards
+                        reports={workerReports}
+                        onCardClick={handleCardClick}
+                    />
+                </div>
+
+            </section>
+
+
+            {/* ========================================================= */}
+            {/* MOVEMENT REPORT POPUPS                                    */}
+            {/* ========================================================= */}
+
+            {showPopup && selectedReport === "Movement" && (
+                <PopScreen
+                    title={selectedReport}
+                    onClose={() => setShowPopup(false)}
+                    config={movementConfig}
+                    categoryOptions={categoryOptions}
+                    stateOptions={stateOptions}
+                    genderOptions={genderOptions}
+                    departmentOptions={workerDesignation}
+                    designationOptions={workerDesignation}
+                    deprtdesifnation={deprtdesifnation}
+                    employeeDetails={employeeDetails}
+                    onPreview={GETMOVEMENTREPORTASPDFasView}
+                    onPdf={GETMOVEMENTREPORTASPDF}
+                    onExcel={GETMOVEMENTREPORTASEXCEL}
+                    ReportType="MOVEMENT"
+                />
+            )}
+
+
+            {showPopup && selectedReport === "Daily Movement" && (
+                <PopScreen
+                    title={selectedReport}
+                    onClose={() => setShowPopup(false)}
+                    config={DailymovementConfig}
+                    categoryOptions={categoryOptions}
+                    stateOptions={stateOptions}
+                    genderOptions={genderOptions}
+                    departmentOptions={staffDepartment}
+                    designationOptions={workerDesignation}
+                    deprtdesifnation={deprtdesifnation}
+                    employeeDetails={employeeDetails}
+                    onPreview={DAILYMOVEMENTREPORTASPDFasView}
+                    onPdf={DAILYMOVEMENTREPORTASPDFD}
+                    ReportType="MOVEMENT"
+                />
+            )}
+
+
+            {showPopup && selectedReport === "InPunch Movement" && (
+                <PopScreen
+                    title={selectedReport}
+                    onClose={() => setShowPopup(false)}
+                    config={InpunchmovementConfig}
+                    categoryOptions={categoryOptions}
+                    stateOptions={stateOptions}
+                    genderOptions={genderOptions}
+                    departmentOptions={staffDepartment}
+                    designationOptions={workerDesignation}
+                    deprtdesifnation={deprtdesifnation}
+                    employeeDetails={employeeDetails}
+                    onPreview={DAILYMOVEMENTREPORTASPDFasView}
+                    onPdf={DAILYMOVEMENTREPORTASPDFD}
+                    ReportType="MOVEMENT"
+                />
+            )}
+
+
+            {/* ========================================================= */}
+            {/* STAFF REPORT POPUP                                       */}
+            {/* ========================================================= */}
+
+            {showPopup && selectedReport === "Staff Salary" && (
+                <PopScreen
+                    title={selectedReport}
+                    onClose={() => setShowPopup(false)}
+                    config={staffConfig}
+                    categoryOptions={s_categoryOptions}
+                    stateOptions={stateOptions}
+                    genderOptions={genderOptions}
+                    departmentOptions={staffDepartment}
+                    designationOptions={staffDesignation}
+                    deprtdesifnation={deprtdesifnation}
+                    employeeDetails={employeeDetails}
+                    onFinalize={FinalizeStaffSalary}
+                    onPreview={StaffSalaryasView}
+                    onPdf={StaffSalaryaspdfD}
+                    onExcel={StaffSalaryasExcelD}
+                    ReportType="STAFF"
+                    firstFinalizedMonthandYear={
+                        firstStaffFinalizedMonthandYear
+                    }
+                    lastFinalizedMonthandYear={
+                        lastStaffFinalizedMonthandYear
+                    }
+                />
+            )}
+
+
+            {/* ========================================================= */}
+            {/* WORKER REPORT POPUPS                                     */}
+            {/* ========================================================= */}
+
+            {showPopup && selectedReport === "Picler Salary" && (
+                <PopScreen
+                    title={selectedReport}
+                    onClose={() => setShowPopup(false)}
+                    config={workerPSConfig}
+                    categoryOptions={w_categoryOptions}
+                    stateOptions={stateOptions}
+                    genderOptions={genderOptions}
+                    departmentOptions={workerDepartment}
+                    designationOptions={workerDesignation}
+                    deprtdesifnation={deprtdesifnation}
+                    employeeDetails={employeeDetails}
+                    onPreview={PICKERSALARYREPORTView}
+                    onPdf={GETPICKERSALARYREPORTasPDF}
+                    onExcel={PICKERSALARYREPORTasEXCEL}
+                    ReportType="WORKER"
+                />
+            )}
+
+
+            {showPopup && selectedReport === "Picker Final Salary" && (
+                <PopScreen
+                    title={selectedReport}
+                    onClose={() => setShowPopup(false)}
+                    config={workerPFSConfig}
+                    categoryOptions={w_categoryOptions}
+                    stateOptions={stateOptions}
+                    genderOptions={genderOptions}
+                    departmentOptions={workerDepartment}
+                    designationOptions={workerDesignation}
+                    deprtdesifnation={deprtdesifnation}
+                    employeeDetails={employeeDetails}
+                    onPreview={PICKERSALARYFINALREPORTasView}
+                    onPdf={PICKERSALARYFINALREPORTasPDF}
+                    onExcel={PICKERSALARYFINALREPORTasEXCEL}
+                    ReportType="WORKER"
+                />
+            )}
+
+
+            {showPopup && selectedReport === "Form M Detailed" && (
+                <PopScreen
+                    title={selectedReport}
+                    onClose={() => setShowPopup(false)}
+                    config={workerFMDConfig}
+                    categoryOptions={w_categoryOptions}
+                    stateOptions={stateOptions}
+                    genderOptions={genderOptions}
+                    departmentOptions={workerDepartment}
+                    designationOptions={workerDesignation}
+                    deprtdesifnation={deprtdesifnation}
+                    employeeDetails={employeeDetails}
+                    onPreview={FormMDetailedASPreview}
+                    onPdf={FormMDetailedASPDF}
+                    onExcel={FormMDetailedASEXCEL}
+                    ReportType="WORKER"
+                />
+            )}
+
+
+            {showPopup && selectedReport === "Form M Weekly" && (
+                <PopScreen
+                    title={selectedReport}
+                    onClose={() => setShowPopup(false)}
+                    config={workerFMWConfig}
+                    categoryOptions={w_categoryOptions}
+                    stateOptions={stateOptions}
+                    genderOptions={genderOptions}
+                    departmentOptions={workerDepartment}
+                    designationOptions={workerDesignation}
+                    deprtdesifnation={deprtdesifnation}
+                    employeeDetails={employeeDetails}
+                    onFinalize={FinalizeWorker15DaysSalary}
+                    onPreview={FormMWeeklyASPreview}
+                    onPdf={FormMWeeklyASPDF}
+                    onExcel={FormMWeeklyASEXCELD}
+                    ReportType="WORKER"
+                    SReportType="Form M Weekly"
+                    firstFinalizedMonthandYear={
+                        firstWorkerFinalizedMonthandYear
+                    }
+                    lastFinalizedMonthandYear={
+                        lastWorkerFinalizedMonthandYear
+                    }
+                />
+            )}
+
+
+            {showPopup && selectedReport === "Group Summary" && (
+                <PopScreen
+                    title={selectedReport}
+                    onClose={() => setShowPopup(false)}
+                    config={workerGSConfig}
+                    categoryOptions={w_categoryOptions}
+                    stateOptions={stateOptions}
+                    genderOptions={genderOptions}
+                    departmentOptions={workerDepartment}
+                    designationOptions={workerDesignation}
+                    deprtdesifnation={workerDesignation}
+                    employeeDetails={employeeDetails}
+                    onPreview={GroupSummaryASPreview}
+                    onPdf={GroupSummaryASPDF}
+                    onExcel={GroupSummaryASEXCELD}
+                    ReportType="WORKER"
+                />
+            )}
+
+        </main>
+
+
+        {/* ========================================================= */}
+        {/* PDF PREVIEW                                               */}
+        {/* ========================================================= */}
+
+        {pdfUrl && (
+            <div className="salary-report-pdf-overlay">
+
+                <div className="salary-report-pdf-modal">
+
+                    <button
+                        className="salary-report-pdf-close"
+                        onClick={() => setPdfUrl(null)}
+                    >
+                        ✕
+                    </button>
+
+                    <iframe
+                        src={`${pdfUrl}#toolbar=0`}
+                        title="PDF Preview"
+                        className="salary-report-pdf-frame"
+                    />
+
+                </div>
+
+            </div>
         )}
-
-                {showPopup && selectedReport === "Daily Movement" &&(
-            <PopScreen
-                title={selectedReport}
-                onClose={() => setShowPopup(false)}
-                config={DailymovementConfig}                
-                categoryOptions = {categoryOptions}
-                stateOptions = {stateOptions}
-                genderOptions = {genderOptions}
-                departmentOptions={staffDepartment}
-                designationOptions={workerDesignation}
-                deprtdesifnation={deprtdesifnation}   
-                employeeDetails={employeeDetails}  
-                onPreview={DAILYMOVEMENTREPORTASPDFasView}
-                onPdf={DAILYMOVEMENTREPORTASPDFD}
-               // onExcel={DAILYMOVEMENTREPORTASEXCELD}  
-                 ReportType="MOVEMENT"
-            />
-        )}
-
-       {showPopup && selectedReport === "InPunch Movement" &&(
-            <PopScreen
-                title={selectedReport}
-                onClose={() => setShowPopup(false)}
-                config={InpunchmovementConfig}                
-                categoryOptions = {categoryOptions}
-                stateOptions = {stateOptions}
-                genderOptions = {genderOptions}
-                departmentOptions={staffDepartment}
-                designationOptions={workerDesignation}
-                deprtdesifnation={deprtdesifnation}   
-                employeeDetails={employeeDetails}  
-                onPreview={DAILYMOVEMENTREPORTASPDFasView}
-                onPdf={DAILYMOVEMENTREPORTASPDFD}
-                //onExcel={DAILYMOVEMENTREPORTASEXCELD}  
-                 ReportType="MOVEMENT"
-            />
-        )}
-    </>
-)}
-
-      {activeSubMenu === "staff" && (
-    <>
-        <Cards
-            reports={staffReports}
-            onCardClick={handleCardClick}
-        />
-
-        {showPopup && (
-            <PopScreen
-                title={selectedReport}
-                onClose={() => setShowPopup(false)}
-                config={staffConfig}                
-                categoryOptions = {s_categoryOptions}
-                stateOptions = {stateOptions}
-                genderOptions = {genderOptions}
-                departmentOptions={staffDepartment}
-                designationOptions={staffDesignation}
-                deprtdesifnation={deprtdesifnation}   
-                employeeDetails={employeeDetails}  
-                onFinalize={FinalizeStaffSalary}
-                onPreview={StaffSalaryasView}
-                onPdf={StaffSalaryaspdfD}
-                onExcel={StaffSalaryasExcelD}  
-                ReportType="STAFF"
-                firstFinalizedMonthandYear={firstStaffFinalizedMonthandYear}
-                lastFinalizedMonthandYear={lastStaffFinalizedMonthandYear}
-            />
-        )}
-    </>
-)}
-
-
-{activeSubMenu === "worker" && (
-    <>
-        <Cards
-            reports={workerReports}
-            onCardClick={handleCardClick}
-        />
-
-        {showPopup && selectedReport === "Picler Salary" && (
-            <PopScreen
-                title={selectedReport}
-                onClose={() => setShowPopup(false)}
-                config={workerPSConfig}                
-                categoryOptions = {w_categoryOptions}
-                stateOptions = {stateOptions}
-                genderOptions = {genderOptions}
-                departmentOptions={workerDepartment}
-                designationOptions={workerDesignation}
-                deprtdesifnation={deprtdesifnation}   
-                employeeDetails={employeeDetails}  
-                onPreview={PICKERSALARYREPORTView}
-                onPdf={GETPICKERSALARYREPORTasPDF}
-                onExcel={PICKERSALARYREPORTasEXCEL}  
-                 ReportType="WORKER"
-            />
-        )}
-
-         {showPopup && selectedReport === "Picker Final Salary" && (
-            <PopScreen
-                title={selectedReport}
-                onClose={() => setShowPopup(false)}
-                config={workerPFSConfig}                
-                categoryOptions = {w_categoryOptions}
-                stateOptions = {stateOptions}
-                genderOptions = {genderOptions}
-                departmentOptions={workerDepartment}
-                designationOptions={workerDesignation}
-                deprtdesifnation={deprtdesifnation}   
-                employeeDetails={employeeDetails}  
-                onPreview={PICKERSALARYFINALREPORTasView}
-                onPdf={PICKERSALARYFINALREPORTasPDF}
-                onExcel={PICKERSALARYFINALREPORTasEXCEL}  
-                 ReportType="WORKER"
-            />
-        )}
-
-         {showPopup && selectedReport === "Form M Detailed" && (
-            <PopScreen
-                title={selectedReport}
-                onClose={() => setShowPopup(false)}  
-                config={workerFMDConfig}                
-                categoryOptions = {w_categoryOptions}
-                stateOptions = {stateOptions}
-                genderOptions = {genderOptions}
-                departmentOptions={workerDepartment}
-                designationOptions={workerDesignation}
-                deprtdesifnation={deprtdesifnation}   
-                employeeDetails={employeeDetails}  
-                onPreview={FormMDetailedASPreview}
-                onPdf={FormMDetailedASPDF}
-                onExcel={FormMDetailedASEXCEL}  
-                 ReportType="WORKER"
-            />
-        )}
-
-        {showPopup && selectedReport === "Form M Weekly" && (
-            <PopScreen
-                title={selectedReport}
-                onClose={() => setShowPopup(false)}  
-                config={workerFMWConfig}                
-                categoryOptions = {w_categoryOptions}
-                stateOptions = {stateOptions}
-                genderOptions = {genderOptions}
-                departmentOptions={workerDepartment}
-                designationOptions={workerDesignation}
-                deprtdesifnation={deprtdesifnation}   
-                employeeDetails={employeeDetails}  
-                 onFinalize={FinalizeWorker15DaysSalary}
-                onPreview={FormMWeeklyASPreview}
-                onPdf={FormMWeeklyASPDF}
-                onExcel={FormMWeeklyASEXCELD}  
-                 ReportType="WORKER"
-                 SReportType="Form M Weekly"
-                firstFinalizedMonthandYear={firstWorkerFinalizedMonthandYear}
-                lastFinalizedMonthandYear={lastWorkerFinalizedMonthandYear}
-            />
-        )}
-
-          {showPopup && selectedReport === "Group Summary" && (
-            <PopScreen
-                title={selectedReport}
-                onClose={() => setShowPopup(false)}  
-                config={workerGSConfig}                
-                categoryOptions = {w_categoryOptions}
-                stateOptions = {stateOptions}
-                genderOptions = {genderOptions}
-                departmentOptions={workerDepartment}
-                designationOptions={workerDesignation}
-                deprtdesifnation={workerDesignation}   
-                employeeDetails={employeeDetails}  
-                onPreview={GroupSummaryASPreview}
-                onPdf={GroupSummaryASPDF}
-                onExcel={GroupSummaryASEXCELD}  
-                 ReportType="WORKER"
-            />
-        )}
-    </>
-)}
-
-
-  </div>
-
-{pdfUrl && (
-  <div className="pdf-modal-overlay">
-    <div className="pdf-modal">
-
-      <button
-        className="pdf-close-btn"
-        onClick={() => setPdfUrl(null)}
-      >
-        ✕
-      </button>
-
-      <iframe
-          src={`${pdfUrl}#toolbar=0`}
-        title="PDF Preview"
-        width="100%"
-        height="100%"
-      />
 
     </div>
-  </div>
-)}
-</div>
- )};
+)};

@@ -1,5 +1,6 @@
-import React from "react";
-import HRMLogo from "../assets/HRM-logo.svg"
+import React, { useEffect, useRef, useState } from "react";
+import HRMLogo from "../assets/HRM-logo.svg";
+import "../css/sidebar.css";
 
 const Sidebar = ({
     activePage,
@@ -9,120 +10,288 @@ const Sidebar = ({
     setActiveSubMenu,
     TabClick
 }) => {
+
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    const sidebarRef = useRef(null);
+
+    const saveSidebarScroll = () => {
+        if (sidebarRef.current) {
+            sessionStorage.setItem(
+                "sidebarScrollPosition",
+                String(sidebarRef.current.scrollTop)
+            );
+        }
+    };
+
+    const restoreSidebarScroll = () => {
+        const sidebar = sidebarRef.current;
+
+        if (!sidebar) {
+            return;
+        }
+
+        const savedPosition = sessionStorage.getItem(
+            "sidebarScrollPosition"
+        );
+
+        if (savedPosition !== null) {
+            const position = Number(savedPosition);
+
+            requestAnimationFrame(() => {
+                if (sidebarRef.current) {
+                    sidebarRef.current.scrollTop = position;
+                }
+            });
+
+            setTimeout(() => {
+                if (sidebarRef.current) {
+                    sidebarRef.current.scrollTop = position;
+                }
+            }, 50);
+
+            setTimeout(() => {
+                if (sidebarRef.current) {
+                    sidebarRef.current.scrollTop = position;
+                }
+            }, 200);
+
+            setTimeout(() => {
+                if (sidebarRef.current) {
+                    sidebarRef.current.scrollTop = position;
+                }
+            }, 500);
+        }
+    };
+
+    useEffect(() => {
+        const sidebar = sidebarRef.current;
+
+        if (!sidebar) {
+            return;
+        }
+
+        const handleScroll = () => {
+            sessionStorage.setItem(
+                "sidebarScrollPosition",
+                String(sidebar.scrollTop)
+            );
+        };
+
+        sidebar.addEventListener("scroll", handleScroll);
+
+        restoreSidebarScroll();
+
+        return () => {
+            sessionStorage.setItem(
+                "sidebarScrollPosition",
+                String(sidebar.scrollTop)
+            );
+
+            sidebar.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
+
+    const handleNavigation = (page) => {
+
+        saveSidebarScroll();
+
+        TabClick(page);
+    };
+
     return (
-        <aside className="layout-menu">
-           <aside className="layout-menu">
-            <div>
-              <div className="app-brand">
-                <img src={HRMLogo} className="dashboard-logo" alt="HRM" />
-              </div>
-    
-              <ul className="menu-inner left-panel">
+        <>
+            <button
+                type="button"
+                className={`hrms-side-toggle ${
+                    menuOpen
+                        ? "hrms-side-toggle-open"
+                        : "hrms-side-toggle-closed"
+                }`}
+                onClick={() => setMenuOpen((prev) => !prev)}
+            >
+                <i
+                    className={`ti ${
+                        menuOpen
+                            ? "ti-chevron-left"
+                            : "ti-chevron-right"
+                    }`}
+                ></i>
+            </button>
 
-                 <li className="menu-item">
-                  <div 
-                   className={`menu-link menu-parent ${activePage.includes("dashboard") ? "active" : ""}`}
-                     onClick={() => {TabClick("Dashboard")}}>
-                   <i class="ti ti-layout-dashboard"></i>
-                    <span>Dashboard</span>
-                  </div>
-                </li>               
-                <li className="menu-item">
-                  <div 
-                   className={`menu-link menu-parent ${activePage.includes("weighingscale") ? "active" : ""}`}
-                     onClick={() => {TabClick("WeighingScale")}}>
-                    <i class="ti ti-scale"></i>
-                    <span>Weighing Scale</span>
-                  </div>
-                </li>
-    
-                <li className="menu-item">
-                  <div
-                    className={`menu-link menu-parent ${activePage.includes("employee") ? "active" : ""}`}
-                    onClick={() => {TabClick("Employee")}}
-                  >
-                   <i className="menu-icon ti ti-id-badge"></i> 
-                    <span>Employee</span>
-                  </div>
-                </li>
-    
-    
-                 <li className="menu-item">
-                  <div
-                    className={`menu-link menu-parent ${activePage.includes("reports") ? "active" : ""}`}
-                    onClick={() => {TabClick("Reports")}}
-                  >
-                    <i className="menu-icon ti ti-report-analytics"></i>
-                    <span>Weight Report</span>
-                  </div>
-                </li>
-    
-                <li className="menu-item">
-                    <div
-                        className={`menu-link menu-parent ${activePage.includes("barcode") ? "active" : ""}`}
-                        onClick={() => {TabClick("barcode")}}
-                    >
-                        <i className="menu-icon ti ti-barcode"></i>  
-                        <span>Employee Barcode</span>
-                    </div>
-                </li>   
+            <aside
+                ref={sidebarRef}
+                className={`hrms-side-panel ${
+                    menuOpen
+                        ? "hrms-side-panel-open"
+                        : "hrms-side-panel-closed"
+                }`}
+            >
 
-                <li className="menu-item">
-                    <div className={`menu-link menu-parent ${salaryOpen ? "active" : ""}`}  onClick={() => {TabClick("commonsubmenuscreen"),setSalaryOpen(!salaryOpen),setActiveSubMenu("staff")}} >
-                        <i className="menu-icon ti ti-cash"></i>
-                        <span>Reports</span>
+                <div className="hrms-side-container">
 
-                        <i  className={`ti ${salaryOpen ? "ti-chevron-down" : "ti-chevron-right"}`}
-                            style={{
-                                marginLeft: "auto",
-                                transition: "transform .3s ease",
-                                transform: salaryOpen ? "rotate(0deg)" : "rotate(-0deg)"
-                            }}
-                        ></i>
+                    <div className="hrms-side-brand">
+                        <img
+                            src={HRMLogo}
+                            className="hrms-side-logo"
+                            alt="HRM"
+                        />
                     </div>
 
-                    <ul className={`submenu ${salaryOpen ? "open" : ""}`}>
-                        <li className={`submenu-item ${activeSubMenu === "staff" ? "sub-active" : ""}`}  onClick={() => setActiveSubMenu("staff")}>
-                            <span className="submenu-bullet">•</span>
-                            <span className="submenu-name">Staff Report</span>
+                    <ul className="hrms-side-menu">
+
+                        <li className="hrms-side-menu-item">
+                            <div
+                                className={`hrms-side-menu-link ${
+                                    activePage.includes("dashboard")
+                                        ? "hrms-side-active"
+                                        : ""
+                                }`}
+                                onClick={() => {
+                                    handleNavigation("Dashboard");
+                                }}
+                            >
+                                <i className="ti ti-layout-dashboard"></i>
+                                <span>Dashboard</span>
+                            </div>
                         </li>
 
-                        <li className={`submenu-item ${activeSubMenu === "worker" ? "sub-active" : ""}` }  onClick={() => setActiveSubMenu("worker")}>
-                            <span className="submenu-bullet">•</span>
-                            <span className="submenu-name">Worker Report</span>
+                        <li className="hrms-side-menu-item">
+                            <div
+                                className={`hrms-side-menu-link ${
+                                    activePage.includes("weighingscale")
+                                        ? "hrms-side-active"
+                                        : ""
+                                }`}
+                                onClick={() => {
+                                    handleNavigation("WeighingScale");
+                                }}
+                            >
+                                <i className="ti ti-scale"></i>
+                                <span>Weighing Scale</span>
+                            </div>
                         </li>
 
-                        <li className={`submenu-item ${activeSubMenu === "movement" ? "sub-active" : ""}`}  onClick={() => setActiveSubMenu("movement")}>
-                            <span className="submenu-bullet">•</span>
-                            <span className="submenu-name">Movement Report</span>
+                        <li className="hrms-side-menu-item">
+                            <div
+                                className={`hrms-side-menu-link ${
+                                    activePage.includes("employee")
+                                        ? "hrms-side-active"
+                                        : ""
+                                }`}
+                                onClick={() => {
+                                    handleNavigation("Employee");
+                                }}
+                            >
+                                <i className="ti ti-id-badge"></i>
+                                <span>Employee</span>
+                            </div>
                         </li>
+
+                        <li className="hrms-side-menu-item">
+                            <div
+                                className={`hrms-side-menu-link ${
+                                    activePage.includes("reports")
+                                        ? "hrms-side-active"
+                                        : ""
+                                }`}
+                                onClick={() => {
+                                    handleNavigation("Reports");
+                                }}
+                            >
+                                <i className="ti ti-report-analytics"></i>
+                                <span>Weight Report</span>
+                            </div>
+                        </li>
+
+                        <li className="hrms-side-menu-item">
+                            <div
+                                className={`hrms-side-menu-link ${
+                                    activePage.includes("barcode")
+                                        ? "hrms-side-active"
+                                        : ""
+                                }`}
+                                onClick={() => {
+                                    handleNavigation("barcode");
+                                }}
+                            >
+                                <i className="ti ti-barcode"></i>
+                                <span>Employee Barcode</span>
+                            </div>
+                        </li>
+
+                        {/* Reports - unchanged */}
+                        <li className="hrms-side-menu-item">
+                            <div
+                                className={`hrms-side-menu-link ${
+                                    salaryOpen
+                                        ? "hrms-side-active"
+                                        : ""
+                                }`}
+                                onClick={() => {
+                                    setSalaryOpen(!salaryOpen);
+                                    TabClick("commonsubmenuscreen");
+                                }}
+                            >
+                                <i className="ti ti-cash"></i>
+                                <span>Reports</span>
+                            </div>
+                        </li>
+
+                        <li className="hrms-side-menu-item">
+                            <div
+                                className={`hrms-side-menu-link ${
+                                    activePage.includes("salarysetting")
+                                        ? "hrms-side-active"
+                                        : ""
+                                }`}
+                                onClick={() => {
+                                    handleNavigation("SalarySetting");
+                                }}
+                            >
+                                <i className="ti ti-tool"></i>
+                                <span>Salary Configurations</span>
+                            </div>
+                        </li>
+
+                        <li className="hrms-side-menu-item">
+                            <div
+                                className={`hrms-side-menu-link ${
+                                    activePage.includes("idcard")
+                                        ? "hrms-side-active"
+                                        : ""
+                                }`}
+                                onClick={() => {
+                                    handleNavigation("idcard");
+                                }}
+                            >
+                                <i className="ti ti-id-badge"></i>
+                                <span>ID Card</span>
+                            </div>
+                        </li>
+
+                        <li className="hrms-side-menu-item">
+                            <div
+                                className={`hrms-side-menu-link ${
+                                    activePage.includes("advance")
+                                        ? "hrms-side-active"
+                                        : ""
+                                }`}
+                                onClick={() => {
+                                    handleNavigation("Advance");
+                                }}
+                            >
+                                <i className="ti ti-wallet"></i>
+                                <span>Advance</span>
+                            </div>
+                        </li>
+
                     </ul>
-                </li>
 
+                </div>
 
-                    <li className="menu-item">
-                        <div
-                            className={`menu-link menu-parent ${activePage.includes("salarysetting") ? "active" : ""}`}
-                            onClick={() => {TabClick("SalarySetting")}}
-                        >
-                           <i className="ti ti-tool"></i>
-                            <span>Salary Configurations</span>
-                        </div>
-                    </li> 
-                    <li className="menu-item">
-                        <div
-                            className={`menu-link menu-parent ${activePage.includes("idcard") ? "active" : ""}`}
-                            onClick={() => {TabClick("idcard")}}
-                        >
-                           <i className="ti ti-id-badge"></i>
-                            <span>ID Card</span>
-                        </div>
-                    </li>
-
-              </ul>
-            </div>
-          </aside>
-        </aside>
+            </aside>
+        </>
     );
 };
 

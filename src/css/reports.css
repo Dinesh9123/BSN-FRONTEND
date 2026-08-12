@@ -49,6 +49,7 @@ html, body, #root {
   background-color: #f4f6fb;
   display: flex;
   flex-direction: column;
+      padding-left: 80px;
 }
 
 .top-header {
@@ -230,7 +231,7 @@ html, body, #root {
   border-radius: 10px;
   border: 1px solid #e5e7eb;
   color: #111827;
-  line-height: 26px; /* key for vertical centering */
+  line-height: 40px;
 }
 
 
@@ -490,9 +491,7 @@ button:hover {
     margin:6px;
   }
 
-  .layout-page{
-    padding:10px;
-  }
+  
 
   .top-header{
     width:100%;

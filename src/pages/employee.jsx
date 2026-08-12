@@ -1205,7 +1205,7 @@ var handleImportfileChange = (e,objName) => {
     />
 
    <div className="main-addEmp">
-      <div className="layout-page">
+      {/* <div className="layout-page">
         <div className="top-header">
          <div className="headertop">
              <h3>{headerTitle}</h3>
@@ -1226,7 +1226,7 @@ var handleImportfileChange = (e,objName) => {
             )}
           </div>
         </div>
-        </div>
+        </div> */}
 
         {activePage === "employee-list" && (
           <div className="employee-page">

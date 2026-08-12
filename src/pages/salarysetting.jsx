@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import "../css/salarysetting.css"
 import {getActiveSalaryConfigValues,SetNewSalaryConfigurations,UploadExcelWeightData,uploadContractorAmountData
-  ,uploadDeductionData,uploadDriverAttendanceData,uploadDeductionsData
+  ,uploadDeductionData,uploadDriverAttendanceData,uploadESIPFDeductionsData
 } from "../common/apiService.jsx";
 import { IconAlertCircle } from "@tabler/icons-react";
 import * as XLSX from "xlsx";
@@ -16,7 +16,7 @@ import Sidebar from "../components/Sidebar.jsx"
 
 export default function SalarySetting() {
 
-var [activePage, setActivePage] = useState("sal-setting");
+var [activePage, setActivePage] = useState("SalarySetting");
 var [headerTitle, setHeaderTitle] = useState("Salary Configurations");
 var { showLoader, hideLoader } = useLoader();
 var navigate = useNavigate();
@@ -615,6 +615,10 @@ const headers = [
   ...Array.from({ length: 20 }, (_, i) => (i + 1).toString())   // 1–20
 ];
 
+
+
+
+
 const filteredData = jsonData
   .filter(row => row.ID)
   .map(row => ({
@@ -695,16 +699,28 @@ const onclickuploadDbtn = () => {
     const workbook = XLSX.read(data, { type: "binary" });
     const sheetName = workbook.SheetNames[0];
     const sheet = workbook.Sheets[sheetName];
-    const jsonData = XLSX.utils.sheet_to_json(sheet, { raw: false });
+    const jsonData = XLSX.utils.sheet_to_json(sheet, { raw: true,
+            defval: "" });
 
+       const formattedData = jsonData.map((row) => {
+            const newRow = { ...row };
 
-    console.log("Excel Data:", jsonData);
+           Object.keys(newRow).forEach((key) => {
+                if (key.trim().toUpperCase() === "DATE") {
+                    newRow[key] = formatDate4XL(newRow[key]);
+                }
+            });
+
+            return newRow;
+        });
+
+    console.log("Excel Data:", formattedData);
 var t = {}
    t.month = importDdata.month;
 
-    uploadDeductionsData(
+    uploadESIPFDeductionsData(
       {
-        excelData: jsonData
+        excelData: formattedData
       },
       {
         success: (res) => {
@@ -870,6 +886,52 @@ function formatDate(dateStr) {
     const [year, month, day] = dateStr.split("-");
     return `${day}/${month}/${year}`;
 }
+
+
+function formatDate4XL(value) {
+    if (value === null || value === undefined || value === "") {
+        return value;
+    }
+
+    // Excel serial number
+    if (typeof value === "number") {
+        return XLSX.SSF.format("dd/mm/yyyy", value);
+    }
+
+    // JavaScript Date
+    if (value instanceof Date && !isNaN(value.getTime())) {
+        return XLSX.SSF.format("dd/mm/yyyy", value);
+    }
+
+    if (typeof value === "string") {
+        const str = value.trim();
+
+        // Already DD/MM/YYYY or DD-MM-YYYY
+        let match = str.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})$/);
+        if (match) {
+            return `${match[1].padStart(2, "0")}/${match[2].padStart(2, "0")}/${match[3]}`;
+        }
+
+        // YYYY-MM-DD or YYYY/MM/DD
+        match = str.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/);
+        if (match) {
+            return `${match[3].padStart(2, "0")}/${match[2].padStart(2, "0")}/${match[1]}`;
+        }
+
+        // Let JavaScript parse other formats
+        const date = new Date(str);
+
+        if (!isNaN(date.getTime())) {
+            const day = String(date.getDate()).padStart(2, "0");
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+            const year = date.getFullYear();
+
+            return `${day}/${month}/${year}`;
+        }
+    }
+
+    return value;
+};
 var onclickupdateConfigbtn = () =>{
     if (!validateForm()) return;
 showLoader("Please wait...");
@@ -943,7 +1005,7 @@ showLoader("Please wait...");
 <div className="layout-wrapper">
 
 <Sidebar
-        activePage="sal-setting"
+        activePage="salarysetting"
         activeSubMenu={activeSubMenu}
         salaryOpen={salaryOpen}
         setSalaryOpen={setSalaryOpen}
@@ -1205,7 +1267,7 @@ showLoader("Please wait...");
 
 
  <div class="top-header-ss">
-          <h3>Manual Deductions</h3>
+          <h3>ESI / PF Deductions</h3>
           <div className="import-section">
               
               <div className="form-group">

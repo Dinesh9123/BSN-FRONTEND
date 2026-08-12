@@ -291,7 +291,7 @@ var onClickPrev = () => {
 
 
       <div className="layout-page">
-        <div className="top-header">
+        {/* <div className="top-header">
 <div className="headertop">
              <h3>{headerTitle}</h3>
           </div>
@@ -310,7 +310,7 @@ var onClickPrev = () => {
               </div>
             )}
           </div>
-        </div>
+        </div> */}
           <div className="employee-page">
             <div className="employee-card">
               <div className="employee-header"></div>

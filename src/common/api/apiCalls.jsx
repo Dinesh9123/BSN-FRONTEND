@@ -35,6 +35,41 @@ export const ApiPostCall = ({endpoint, data, callback }) => {
     });
 };
 
+export const ApiMultipartPostCall = ({ endpoint, data, callback }) => {
+try{
+  fetch(API_BASE_URL + endpoint, {
+    method: "POST",
+    headers: {
+      "Authorization": "Bearer " + localStorage.getItem("token")
+    },
+    body: data
+  })
+    .then(async (res) => {
+      const text = await res.text();
+
+      if (!res.ok) {
+        throw {
+          status: res.status,
+          message: text || "Server Error",
+        };
+      }
+
+      return text ? JSON.parse(text) : {};
+    })
+    .then((result) => {
+      callback?.success && callback.success(result);
+    })
+    .catch((error) => {
+      callback?.error &&
+        callback.error({
+          message: error.message || "Unable to connect to server",
+          status: error.status || 0,
+        });
+    });
+  }catch(e){
+    console.log(e)
+  }
+};
 
 export const ApiGetCall = ({ endpoint, params, callback }) => {
   let url = API_BASE_URL + endpoint;

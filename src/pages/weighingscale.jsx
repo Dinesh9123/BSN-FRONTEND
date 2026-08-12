@@ -577,7 +577,7 @@ var onchangebarcode = (e) => {
     />
 
       <div className="layout-page">
-        <div className="top-header">
+        {/* <div className="top-header">
           <div className="headertop">
              <h3>{headerTitle}</h3>
           </div>
@@ -596,7 +596,7 @@ var onchangebarcode = (e) => {
               </div>
             )}
           </div>
-        </div>
+        </div> */}
 
         
 

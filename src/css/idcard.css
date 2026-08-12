@@ -173,11 +173,9 @@
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
   padding: 0px 30px;
-     width: 78%;
+     width: 100%;
   text-align: center;
-  padding-bottom: 20px;
-  padding-top: 20px;
-      margin: 10px;
+  padding-left: 80px;
 }
 
 .id-layout-wrapper {

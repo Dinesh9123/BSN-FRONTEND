@@ -1,5 +1,5 @@
 import { ApiPostCall ,ApiGetCall,ApiPutCall,ApiDeleteCall,ApiGetExportCall,ApiGetbarcodePreviewCall,
-  ApiPostExportCall,ApiPostPICKERSALARYREPORTPreviewCall,downloadIdCardsZip} from "./api/apiCalls.jsx";
+  ApiPostExportCall,ApiPostPICKERSALARYREPORTPreviewCall,downloadIdCardsZip,ApiMultipartPostCall} from "./api/apiCalls.jsx";
 
 export const createEmployee = (data, callback) => {
 
@@ -240,12 +240,43 @@ export const uploadDeductionData = (data,callback) => {
 
 export const uploadDeductionsData = (data,callback) => {
   ApiPostCall({
-    endpoint: "/staff-upload/deductions",
+    endpoint: "/bulk-advance/deductions",
     data: data,
     callback: callback,
   });
 };
 
+export const uploadESIPFDeductionsData = (data,callback) => {
+  ApiPostCall({
+    endpoint: "/esi-pf/deductions",
+    data: data,
+    callback: callback,
+  });
+};
+
+export const getAdvanceDetails = (data,callback) => {
+  ApiPostCall({
+    endpoint: "/advance/get/details",
+    data: data,
+    callback: callback,
+  });
+};
+
+export const getOSAdvanceDetails = (data,callback) => {
+  ApiPostCall({
+    endpoint: "/advance/get/os/advance",
+    data: data.data,
+    callback: callback,
+  });
+};
+
+export const validateAdvanceEmployees = (data,callback) => {
+  ApiPostCall({
+    endpoint: "/bulk-advance/validate-employees",
+    data: data,
+    callback: callback,
+  });
+};
 
 export const DownloadPickerFinalSalaryReportExcel = (data,fileName,callback) => {
   ApiPostExportCall({
@@ -355,7 +386,7 @@ export const FormMDetailedaspdf = (data,callback) => {
 // };
 
 export const FormMWeeklyasEXCEL = (data,callback) => {
-  ApiPostCall({
+  ApiPostPICKERSALARYREPORTPreviewCall({
     endpoint: "/salary/export/formMWeeklyfor15Excel", 
     data: data.filters,
     callback: callback,
@@ -462,6 +493,38 @@ export const GROUPSUMMARYDETAILSASEXCEL = (data,callback) => {
   ApiPostPICKERSALARYREPORTPreviewCall({
     endpoint: "/salary/export/", 
     data: data,
+    callback: callback,
+  });
+};
+
+export const viewDetailedAdvace = (data,callback) => {
+  ApiPostCall({
+    endpoint: "/advance/get/detailed-advance", 
+    data: data.data,
+    callback: callback,
+  });
+};
+
+export const getFilterBySearch = (data,callback) => {
+  ApiPostCall({
+    endpoint: "/manual-deduction/get/filter-by-search", 
+    data: data.data,
+    callback: callback,
+  });
+};
+
+export const SaveManualDeductionData = (data,callback) => {
+  ApiMultipartPostCall({
+    endpoint: "/manual-deduction/save/data", 
+    data: data.data,
+    callback: callback,
+  });
+};
+
+export const DeleteSelectedRecord = (data,callback) => {
+  ApiPostCall({
+    endpoint: "/manual-deduction/delete/record", 
+    data: data.data,
     callback: callback,
   });
 };
